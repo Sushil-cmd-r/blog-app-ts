@@ -11,8 +11,6 @@ const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false)
   const isTablet = useMediaQuery('(min-width:600px)');
 
-  console.log(isTablet)
-
   return (
     <header className="h-14 sm:h-16 w-full px-4">
       <div className="h-full w-full max-w-7xl mx-auto flex justify-between gap-3">
@@ -30,7 +28,7 @@ const Header = () => {
 
         {/* Search */}
         <motion.div
-          className="h-full flex items-center overflow-hidden justify-end sm:justify-center "
+          className="h-full w-[42px] sm:w-80 flex items-center overflow-hidden justify-end sm:justify-center "
           animate={{
             width: (!searchOpen && !isTablet) ? 42 : 'auto'
           }}>
