@@ -17,7 +17,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="h-16 w-full px-4 flex items-center">
+    <nav className="h-16 w-full px-4 flex items-center sticky -top-[0.1px] bg-white z-10">
       <div className="relative w-full h-full max-w-7xl mx-auto border-b-2 flex items-center gap-2 md:flex-row-reverse">
         {/* Selected Option */}
         <span className="h-full flex items-center font-semibold text-sm md:text-base whitespace-nowrap md:hidden">
@@ -45,7 +45,7 @@ const Navbar = () => {
         </div>
 
         {/* Dropdown options */}
-        <motion.div className="absolute top-16 right-0 rounded-md overflow-hidden md:top-0 md:relative md:flex md:flex-row h-0 md:h-16"
+        <motion.div className="absolute top-16 right-0 rounded-md overflow-hidden md:top-0 md:relative md:flex md:flex-row h-0 md:h-16 md:gap-4 z-30"
           animate={{
             height: isTablet ? 64 : openOptions ? 'auto' : 0
           }}

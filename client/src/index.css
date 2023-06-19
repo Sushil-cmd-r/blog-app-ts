@@ -12,4 +12,14 @@
   .blue-button {
     @apply text-white bg-blue-600 px-2 py-1 hover:bg-blue-700 cursor-pointer;
   }
+
+  .input {
+    @apply outline-none bg-[#F7F8FA] border-[1px] px-3 border-[#D9D9DB] border-b-0 w-full;
+  }
+}
+
+.modal-dim {
+  width: clamp(300px, 95%, 600px);
+  height: auto;
+  max-height: min(80%, 400px);
 }
