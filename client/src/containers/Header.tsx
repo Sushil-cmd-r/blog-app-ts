@@ -1,5 +1,5 @@
 import { memo, useState } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { motion } from 'framer-motion'
 import { ReactComponent as Logo } from '../assets/svgs/logo.svg'
@@ -10,14 +10,14 @@ import { Avatar, useMediaQuery } from "@mui/material"
 import useAuth from "../hooks/useAuth"
 
 import { logout } from "../api/authRequest"
+import useModal from "../hooks/useModal"
 
 const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false)
   const isTablet = useMediaQuery('(min-width:600px)');
 
   const { state, dispatch, AUTH_ACTIONS } = useAuth()
-
-  const location = useLocation()
+  const { openModal } = useModal()
 
   const handleLogout = async () => {
     let success = false;
@@ -30,6 +30,11 @@ const Header = () => {
         dispatch({ type: AUTH_ACTIONS.AUTH_RESET })
       }
     }
+  }
+
+  const handleClick = () => {
+    openModal()
+    console.log("clicked")
   }
 
   return (
@@ -60,14 +65,13 @@ const Header = () => {
         <motion.div className="flex items-center space-x-1 whitespace-nowrap select-none"
         >
           {state.user === null ?
-            <Link to="/auth"
-              state={{ previousLocation: location }}>
+            <span onClick={handleClick}>
               <span className="hidden sm:inline">Create Account ,</span>
               <motion.span className="ml-1 link" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}
               >
                 Log In!
               </motion.span>
-            </Link> :
+            </span> :
             <span onClick={handleLogout}>
               <div className="link text-sm hidden sm:block">
                 <span className="text-slate-600">Welcome, </span>

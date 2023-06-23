@@ -1,36 +1,42 @@
 import Backdrop from "./Backdrop"
 import { ReactComponent as Login } from '../assets/svgs/login.svg'
 import { Cancel } from "@mui/icons-material"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import LoginForm from "../components/LoginForm"
-import { useNavigate } from "react-router-dom"
-import { useScrollLock } from "../hooks/useScrollLock"
+
+
 import { motion } from 'framer-motion'
-
-
+import useModal from "../hooks/useModal"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const LoginModal = () => {
   const [login, setLogin] = useState(false);
+  const { closeModal } = useModal()
+  const location = useLocation()
   const navigate = useNavigate()
 
-  const { lockScroll, unlockScroll } = useScrollLock()
 
-  const handleClose = () => navigate(-1)
+  console.log(location)
 
-  useEffect(() => {
-    lockScroll()
+  const handleClose = () => {
+    closeModal()
+    if (location.pathname !== "/") {
+      navigate("/")
+    }
 
-    return () => unlockScroll()
-  })
-
+  }
   const modalAnimation = {
     hidden: {
-      scale: 0,
-      opacity: 0
+      scale: 0
     },
     visible: {
       scale: 1,
-      opacity: 1
+      transition: {
+        duration: 0.2
+      }
+    },
+    exit: {
+      scale: 0
     }
   }
 
@@ -42,6 +48,7 @@ const LoginModal = () => {
         variants={modalAnimation}
         initial="hidden"
         animate="visible"
+        exit="exit"
       >
 
         {/* Close Button */}

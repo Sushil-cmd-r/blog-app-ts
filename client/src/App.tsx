@@ -1,21 +1,15 @@
-import { Route, Routes, useLocation } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 
 import { Home, Create, Single } from './pages'
 
 import RequiredAuth from "./containers/RequiredAuth"
 import Layout from "./containers/Layout"
-import LoginModal from "./containers/LoginModal"
 
 
 const App = () => {
-  let location = useLocation();
-
-  const previousLocation = location.state?.previousLocation
-
-  console.log(previousLocation)
   return <>
 
-    <Routes location={previousLocation || location}>
+    <Routes>
       <Route path="/" element={<Layout />}>
 
         {/* Public Routes */}
@@ -31,14 +25,6 @@ const App = () => {
       </Route>
 
     </Routes >
-
-    {
-      (previousLocation) && (
-        <Routes>
-          <Route path="/auth" element={<LoginModal />} />
-        </Routes>
-      )
-    }
 
   </>
 
