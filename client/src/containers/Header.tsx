@@ -1,18 +1,36 @@
 import { memo, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 import { motion } from 'framer-motion'
 import { ReactComponent as Logo } from '../assets/svgs/logo.svg'
 
 import Search from "../components/Search"
-import { useMediaQuery } from "@mui/material"
-import useModal from "../hooks/useModal"
+import { Avatar, useMediaQuery } from "@mui/material"
+
+import useAuth from "../hooks/useAuth"
+
+import { logout } from "../api/authRequest"
 
 const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false)
   const isTablet = useMediaQuery('(min-width:600px)');
 
-  const { openModal } = useModal();
+  const { state, dispatch, AUTH_ACTIONS } = useAuth()
+
+  const location = useLocation()
+
+  const handleLogout = async () => {
+    let success = false;
+    try {
+      success = await logout()
+    } catch (err) {
+      success = false
+    } finally {
+      if (success) {
+        dispatch({ type: AUTH_ACTIONS.AUTH_RESET })
+      }
+    }
+  }
 
   return (
     <header className="h-14 sm:h-16 w-full px-4">
@@ -41,10 +59,27 @@ const Header = () => {
         {/* Login */}
         <motion.div className="flex items-center space-x-1 whitespace-nowrap select-none"
         >
-          <span className="hidden sm:inline">Create Account ,</span>
-          <motion.span className="ml-1 link" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }} onClick={openModal}>
-            Log In!
-          </motion.span>
+          {state.user === null ?
+            <Link to="/auth"
+              state={{ previousLocation: location }}>
+              <span className="hidden sm:inline">Create Account ,</span>
+              <motion.span className="ml-1 link" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}
+              >
+                Log In!
+              </motion.span>
+            </Link> :
+            <span onClick={handleLogout}>
+              <div className="link text-sm hidden sm:block">
+                <span className="text-slate-600">Welcome, </span>
+                <motion.span whileHover={{ scale: 1.5 }} whileTap={{ scale: 0.9 }}>
+                  {state.user.firstName + " " + state.user.lastName}
+                </motion.span>
+              </div>
+              <div className="h-3/4 sm:h-2/3 aspect-square flex items-center sm:hidden">
+                <Avatar sx={{ width: 35, height: 35 }} />
+              </div>
+            </span>
+          }
         </motion.div>
 
       </div>

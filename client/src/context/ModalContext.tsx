@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactElement, createContext, useState } from "react";
 
 const useModal = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -20,11 +20,12 @@ type ModalContextType = ReturnType<typeof useModal>
 
 export const ModalContext = createContext<ModalContextType>(initialState);
 
-type PropsType = {
-  children: ReactNode | ReactNode[]
+type ChildrenType = {
+  children: ReactElement | ReactElement[]
 }
 
-const ModalProvider = ({ children }: PropsType) => {
+
+const ModalProvider = ({ children }: ChildrenType) => {
   return (
     <ModalContext.Provider value={useModal()}>
       {children}

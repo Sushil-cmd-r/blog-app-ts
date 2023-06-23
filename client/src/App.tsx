@@ -1,38 +1,46 @@
-import { Route, Routes } from "react-router-dom"
-import Header from "./containers/Header"
+import { Route, Routes, useLocation } from "react-router-dom"
+
 import { Home, Create, Single } from './pages'
-import useModal from "./hooks/useModal";
-import LoginModal from "./containers/LoginModal";
-import { useScrollLock } from "./hooks/useScrollLock";
-import { useEffect } from "react";
+
+import RequiredAuth from "./containers/RequiredAuth"
+import Layout from "./containers/Layout"
+import LoginModal from "./containers/LoginModal"
+
 
 const App = () => {
-  const { isModalOpen, closeModal } = useModal();
-  const { lockScroll, unlockScroll } = useScrollLock();
+  let location = useLocation();
 
-  useEffect(() => {
-    if (isModalOpen)
-      lockScroll()
-    else
-      unlockScroll()
+  const previousLocation = location.state?.previousLocation
 
-  }, [isModalOpen])
+  console.log(previousLocation)
+  return <>
 
-  return (
-    <>
-      <Header />
-      <Routes>
+    <Routes location={previousLocation || location}>
+      <Route path="/" element={<Layout />}>
+
         {/* Public Routes */}
-        <Route path="/" index element={<Home />} />
+        <Route index element={<Home />} />
+
         <Route path="/:blogId" element={<Single />} />
 
         {/* Protected Route */}
-        <Route path="/create" element={<Create />} />
-      </Routes>
+        <Route element={<RequiredAuth />}>
+          <Route
+            path="/create" element={<Create />} />
+        </Route>
+      </Route>
 
-      {isModalOpen && <LoginModal handleClose={closeModal} />}
+    </Routes >
 
-    </>
-  )
+    {
+      (previousLocation) && (
+        <Routes>
+          <Route path="/auth" element={<LoginModal />} />
+        </Routes>
+      )
+    }
+
+  </>
+
 }
 export default App

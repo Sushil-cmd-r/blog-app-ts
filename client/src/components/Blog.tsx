@@ -1,13 +1,14 @@
 import { useState } from "react"
 
 import { Edit, Favorite, FavoriteBorder } from "@mui/icons-material"
-import image from '../assets/images/image.jpg'
+import image from '../assets/images/image.webp'
 import { Avatar } from "@mui/material"
 
 import { Link } from "react-router-dom"
 
 const Blog = () => {
   const [like, setLike] = useState(false)
+  // const image = 'https://blog-app-images-webp.s3.ap-northeast-1.amazonaws.com/image.webp'
 
   return (
     <article className="col-span-1 rounded-2xl overflow-hidden shadow-md hover:shadow-lg">

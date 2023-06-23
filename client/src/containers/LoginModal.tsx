@@ -1,22 +1,48 @@
 import Backdrop from "./Backdrop"
 import { ReactComponent as Login } from '../assets/svgs/login.svg'
 import { Cancel } from "@mui/icons-material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import LoginForm from "../components/LoginForm"
+import { useNavigate } from "react-router-dom"
+import { useScrollLock } from "../hooks/useScrollLock"
+import { motion } from 'framer-motion'
 
-type PropsType = {
-  handleClose: () => void
-}
 
-const LoginModal = ({ handleClose }: PropsType) => {
 
+const LoginModal = () => {
   const [login, setLogin] = useState(false);
+  const navigate = useNavigate()
+
+  const { lockScroll, unlockScroll } = useScrollLock()
+
+  const handleClose = () => navigate(-1)
+
+  useEffect(() => {
+    lockScroll()
+
+    return () => unlockScroll()
+  })
+
+  const modalAnimation = {
+    hidden: {
+      scale: 0,
+      opacity: 0
+    },
+    visible: {
+      scale: 1,
+      opacity: 1
+    }
+  }
 
   return (
     <Backdrop onClick={handleClose}>
-      <div
+      <motion.div
         className="modal-dim rounded-md bg-white relative flex flex-col pb-8"
-        onClick={e => e.stopPropagation()}>
+        onClick={e => e.stopPropagation()}
+        variants={modalAnimation}
+        initial="hidden"
+        animate="visible"
+      >
 
         {/* Close Button */}
         <Cancel fontSize="small" className="absolute cursor-pointer text-slate-200 hover:text-slate-300 -top-6 -right-0 md:-right-3 " onClick={handleClose} />
@@ -32,7 +58,7 @@ const LoginModal = ({ handleClose }: PropsType) => {
                 ? "Already have an account?"
                 : "Don't have an account yet?"}
             </span>
-            <span className="link select-none" onClick={() => setLogin(!login)}>
+            <span className="link select-none" onClick={() => setLogin(prev => !prev)}>
               {login ? " Sign In" : " Create new for free!"}
             </span>
           </p>
@@ -47,7 +73,7 @@ const LoginModal = ({ handleClose }: PropsType) => {
             <Login className="h-full w-full object-contain" />
           </div>
         </div>
-      </div>
+      </motion.div>
     </Backdrop>
   )
 }

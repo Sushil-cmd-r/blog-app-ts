@@ -2,19 +2,20 @@ import { ArrowDropDown, Create } from "@mui/icons-material"
 import { useMediaQuery } from "@mui/material"
 import { motion } from 'framer-motion'
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 const Navbar = () => {
   const options = ['All Blogs', 'Technology', 'Cooking', 'Sports', 'Entertainment', 'Other']
   const [option, setOption] = useState(options[0])
   const [openOptions, setOpenOptions] = useState(false)
-
   const isTablet = useMediaQuery('(min-width:748px)');
 
   const handleSelect = (idx: number): void => {
     setOption(options[idx])
     setOpenOptions(prev => !prev)
   }
+
+  const location = useLocation()
 
   return (
     <nav className="h-16 w-full px-4 flex items-center sticky -top-[0.1px] bg-white z-10">
@@ -25,10 +26,13 @@ const Navbar = () => {
         </span>
 
         {/* Create Button */}
-        <Link to='/create' className="ml-auto">
+        <Link to="create"
+          className="ml-auto"
+          state={{ background: location }}
+        >
           <motion.button className="blue-button h-8 rounded-md flex items-center gap-2 font-semibold text-sm md:text-base" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             Create
-            <span className="h-full aspect-square">
+            <span className="h-full aspect-square flex items-center">
               <Create fontSize="small" />
             </span>
           </motion.button>

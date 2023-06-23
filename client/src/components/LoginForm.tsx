@@ -1,23 +1,20 @@
-import { useState, FormEvent, ChangeEvent } from "react"
+import { useState, FormEvent, ChangeEvent, useEffect } from "react"
 
 import { Cancel, CheckCircle, Visibility, VisibilityOff } from "@mui/icons-material"
 import { ReactComponent as Google } from '../assets/svgs/google.svg'
+import { ReactComponent as Loading } from "../assets/svgs/loading.svg"
 
 import { motion } from 'framer-motion'
+
+import { auth } from "../api/authRequest"
+import useAuth from "../hooks/useAuth"
+import { useLocation, useNavigate } from "react-router-dom"
 
 type PropsType = {
   login: boolean
 }
 
-interface User {
-  firstName?: string | undefined,
-  lastName?: string | undefined,
-  email: string,
-  password: string,
-}
-
 const LoginForm = ({ login }: PropsType) => {
-  const error = false;
   const initUser: User = {
     firstName: "",
     lastName: "",
@@ -27,14 +24,47 @@ const LoginForm = ({ login }: PropsType) => {
 
   const [cpassword, setCpassword] = useState("")
   const [visible, setVisible] = useState(false)
-  const [user, setUser] = useState<User>(initUser)
+  const [userInput, setUserInput] = useState<User>(initUser)
+  const [path, setPath] = useState("login")
 
+  const { state, dispatch, AUTH_ACTIONS } = useAuth()
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (!login)
+      setPath("login")
+    else
+      setPath("register")
+  }, [login])
+
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log("Submitted User: ")
-    console.log(user)
+    dispatch({ type: AUTH_ACTIONS.AUTH_START })
+    try {
+      const payload = await auth(userInput, path)
+      console.log(payload)
+      dispatch({ type: AUTH_ACTIONS.AUTH_SUCCESS, payload: payload })
+      navigate(location.state?.from ?? "/")
+
+    } catch (err) {
+      dispatch({ type: AUTH_ACTIONS.AUTH_FAILURE, payload: err as PayloadType })
+
+    }
+
   }
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (state.status !== "success" && isMounted)
+      dispatch({ type: AUTH_ACTIONS.AUTH_RESET })
+
+    return () => {
+      isMounted = false;
+    }
+  }, [state.user])
 
   return (
     <form encType="multipart/form-data" className="w-full h-auto flex flex-col" onSubmit={handleSubmit}>
@@ -44,18 +74,18 @@ const LoginForm = ({ login }: PropsType) => {
             type="text"
             placeholder="First Name"
             className="input"
-            value={user.firstName}
+            value={userInput.firstName}
             onChange={(e) => {
-              setUser({ ...user, firstName: e.target.value });
+              setUserInput({ ...userInput, firstName: e.target.value });
             }}
           />
           <input
             type="text"
             placeholder="Last Name"
             className="input"
-            value={user.lastName}
+            value={userInput.lastName}
             onChange={(e) => {
-              setUser({ ...user, lastName: e.target.value });
+              setUserInput({ ...userInput, lastName: e.target.value });
             }}
           />
 
@@ -65,9 +95,9 @@ const LoginForm = ({ login }: PropsType) => {
         type="text"
         placeholder="Email"
         className="input h-10"
-        value={user.email}
+        value={userInput.email}
         onChange={(e) => {
-          setUser({ ...user, email: e.target.value });
+          setUserInput({ ...userInput, email: e.target.value });
         }}
       />
       <div className="w-full h-10 flex relative">
@@ -75,9 +105,9 @@ const LoginForm = ({ login }: PropsType) => {
           type={!visible ? "password" : "text"}
           placeholder="Password"
           className={`input ${!login && "border-b"}`}
-          value={user.password}
+          value={userInput.password}
           onChange={(e) => {
-            setUser({ ...user, password: e.target.value });
+            setUserInput({ ...userInput, password: e.target.value });
           }}
         />
         <span className="absolute right-0 h-full aspect-square flex items-center justify-center cursor-pointer text-slate-500" onClick={() => setVisible(!visible)}>
@@ -99,7 +129,7 @@ const LoginForm = ({ login }: PropsType) => {
           />
           <span className="absolute right-0 h-full aspect-square flex items-center justify-center cursor-pointer">
             {cpassword ?
-              cpassword !== user.password ?
+              cpassword !== userInput.password ?
                 <Cancel fontSize="small" className="text-[#FF6B6B]" /> :
                 <CheckCircle fontSize="small" className="text-[#37C172]" /> : null}
           </span>
@@ -107,23 +137,32 @@ const LoginForm = ({ login }: PropsType) => {
       )}
       <p
         className="text-sm text-red-600 "
-        style={{ visibility: error ? "visible" : "hidden" }}
+        style={{ visibility: state.error !== null ? "visible" : "hidden" }}
       >
-        {error || "No error"}
+        {state.error?.message || "No error"}
       </p>
       <motion.button
         type="submit"
         className="blue-button flex items-center justify-center rounded-full h-10 mt-2 select-none"
+        disabled={state.status === 'fetching'}
         whileTap={{ scale: 0.9 }}
       >
-        {login ? "Create Account" : "Sign in"}
+        {state.status === 'fetching' ?
+          <>
+            <Loading className="inline w-4 h-4 mr-3 text-white animate-spin" />
+            Loading...
+          </>
+          : login ? "Create Account" : "Sign in"}
       </motion.button>
       <motion.div className="flex items-center gap-2 h-10 justify-center border-[1px] border-[#D9D9DB] mt-3 hover:bg-[#D9D9DB] cursor-pointer select-none"
         whileTap={{ scale: 0.9 }}>
         <Google />
         <span>Sign {!login ? "In" : "Up"} with Google</span>
       </motion.div>
+
     </form >
+
+
   )
 }
 export default LoginForm

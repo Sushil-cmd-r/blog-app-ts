@@ -7,7 +7,8 @@ const useModal = () => {
   return {
     isModalOpen: openModal,
     openModal: open,
-    closeModal: close
+    closeModal: close,
+
   }
 }
 
