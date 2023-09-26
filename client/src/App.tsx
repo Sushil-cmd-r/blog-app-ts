@@ -19,8 +19,7 @@ const App = () => {
 
         {/* Protected Route */}
         <Route element={<RequiredAuth />}>
-          <Route
-            path="/create" element={<Create />} />
+          <Route path="/create" element={<Create />} />
         </Route>
       </Route>
 

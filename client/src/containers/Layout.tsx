@@ -1,12 +1,12 @@
 import { useEffect } from "react"
 import { Outlet } from "react-router-dom"
+import { AnimatePresence } from "framer-motion"
 
 import Header from "./Header"
+import LoginModal from "./LoginModal"
 
 import useModal from "../hooks/useModal"
 import { useScrollLock } from "../hooks/useScrollLock"
-import LoginModal from "./LoginModal"
-import { AnimatePresence } from "framer-motion"
 
 const Layout = () => {
   const { isModalOpen } = useModal()

@@ -1,11 +1,12 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import { useEffect } from "react";
+
+import { Outlet } from "react-router-dom";
+
+import useAuth from "../hooks/useAuth";
 import useModal from "../hooks/useModal";
 
 
 const RequiredAuth = () => {
-  const location = useLocation()
   const { state } = useAuth()
   const { openModal } = useModal()
 
@@ -14,8 +15,7 @@ const RequiredAuth = () => {
       openModal()
   }, [state.user])
 
-  const content = <Outlet />
-
-  return content
+  return <Outlet />
 }
+
 export default RequiredAuth

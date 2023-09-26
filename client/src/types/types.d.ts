@@ -5,3 +5,9 @@ interface User {
   email: string,
   password: string,
 }
+
+// Blog Interface
+interface Blog {
+  title: string
+  body: string
+}

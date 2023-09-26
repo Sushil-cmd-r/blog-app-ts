@@ -15,8 +15,26 @@ const LoginModal = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
-
-  console.log(location)
+  const modalAnimation = {
+    hidden: {
+      scale: 0,
+      opacity: 0
+    },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.3
+      }
+    },
+    exit: {
+      scale: 0,
+      opacity: 0,
+      transition: {
+        duration: 0.2
+      }
+    }
+  }
 
   const handleClose = () => {
     closeModal()
@@ -24,20 +42,6 @@ const LoginModal = () => {
       navigate("/")
     }
 
-  }
-  const modalAnimation = {
-    hidden: {
-      scale: 0
-    },
-    visible: {
-      scale: 1,
-      transition: {
-        duration: 0.2
-      }
-    },
-    exit: {
-      scale: 0
-    }
   }
 
   return (
