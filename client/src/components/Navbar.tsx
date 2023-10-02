@@ -29,8 +29,8 @@ const Navbar = () => {
 
         {/* Create Button */}
         <Link
-          // to={state.user ? "/create" : "/login"} state={!state.user && { background: location, from: "/create" }}
-          to="/create"
+          to={!state.user ? "/create" : "/login"} state={state.user && { background: location, from: "/create" }}
+          // to="/create"
           className="ml-auto"
         >
           <motion.button className="blue-button h-8 rounded-md flex items-center gap-2 font-semibold text-sm md:text-base" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>

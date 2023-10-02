@@ -34,6 +34,7 @@ const Editor = ({ blog, setBlog }: PropsType) => {
     if (textAreaRef.current === null) return
     textAreaRef.current.value = "";
     setBlog({ ...blog, body: "" });
+    setTags([])
     textAreaRef.current.focus();
     setHeight("56px");
   };

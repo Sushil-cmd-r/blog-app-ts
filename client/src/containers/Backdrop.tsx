@@ -1,6 +1,4 @@
 import { ReactNode } from "react"
-import { motion } from "framer-motion"
-import { duration } from "@mui/material"
 
 type PropsType = {
   children: ReactNode | ReactNode[],
