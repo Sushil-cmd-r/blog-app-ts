@@ -6,14 +6,18 @@ import LoginForm from "../components/LoginForm"
 
 
 import { motion } from 'framer-motion'
-import useModal from "../hooks/useModal"
 import { useLocation, useNavigate } from "react-router-dom"
+import useAuth from "../hooks/useAuth"
 
 const LoginModal = () => {
   const [login, setLogin] = useState(false);
-  const { closeModal } = useModal()
+
+  const { state } = useAuth();
+
   const location = useLocation()
   const navigate = useNavigate()
+
+  const from = !state.user ? location.state?.background : (location.state?.from || "/")
 
   const modalAnimation = {
     hidden: {
@@ -37,11 +41,7 @@ const LoginModal = () => {
   }
 
   const handleClose = () => {
-    closeModal()
-    if (location.pathname !== "/") {
-      navigate("/")
-    }
-
+    navigate(from)
   }
 
   return (

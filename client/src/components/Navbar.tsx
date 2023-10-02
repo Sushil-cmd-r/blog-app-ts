@@ -3,6 +3,7 @@ import { useMediaQuery } from "@mui/material"
 import { motion } from 'framer-motion'
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
+import useAuth from "../hooks/useAuth"
 
 const Navbar = () => {
   const options = ['All Blogs', 'Technology', 'Cooking', 'Sports', 'Entertainment', 'Other']
@@ -15,6 +16,7 @@ const Navbar = () => {
     setOpenOptions(prev => !prev)
   }
 
+  const { state } = useAuth()
   const location = useLocation()
 
   return (
@@ -26,9 +28,10 @@ const Navbar = () => {
         </span>
 
         {/* Create Button */}
-        <Link to="create"
+        <Link
+          // to={state.user ? "/create" : "/login"} state={!state.user && { background: location, from: "/create" }}
+          to="/create"
           className="ml-auto"
-          state={{ background: location }}
         >
           <motion.button className="blue-button h-8 rounded-md flex items-center gap-2 font-semibold text-sm md:text-base" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             Create

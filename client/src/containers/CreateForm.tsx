@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react"
+import { ChangeEvent, createRef, useRef, useState } from "react"
 
 import { ImageOutlined } from "@mui/icons-material"
 import _ from "lodash"
@@ -12,7 +12,7 @@ const CreateForm = () => {
     body: ""
   }
   const [image, setImage] = useState("")
-  const imageInputRef = useRef<HTMLInputElement | null>(null)
+  const imageInputRef = createRef<HTMLInputElement>()
   const [blog, setBlog] = useState<Blog>(initBlog)
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {

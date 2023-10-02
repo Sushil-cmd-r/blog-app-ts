@@ -3,7 +3,6 @@ import Banner from "../components/Banner"
 import Navbar from "../components/Navbar"
 import Blogs from "../containers/Blogs"
 import Sidebar from "../containers/Sidebar"
-import { Outlet } from "react-router-dom"
 
 const Home = () => {
 
@@ -16,17 +15,10 @@ const Home = () => {
           <Blogs />
           <Sidebar />
         </section>
-
-
       </main>
     )
   }, [])
 
-  return (
-    <>
-      {content}
-      <Outlet />
-    </>
-  )
+  return content
 }
 export default memo(Home)

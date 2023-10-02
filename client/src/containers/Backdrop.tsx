@@ -1,4 +1,6 @@
 import { ReactNode } from "react"
+import { motion } from "framer-motion"
+import { duration } from "@mui/material"
 
 type PropsType = {
   children: ReactNode | ReactNode[],
@@ -9,11 +11,12 @@ const Backdrop = ({ children, onClick }: PropsType) => {
 
   return (
     <div
-      className="absolute top-0 left-0 h-full w-full z-40 bg-[#000000e1] flex items-center justify-center"
+      className="fixed top-0 left-0 h-full w-full z-40 bg-[#000000e1] flex items-center justify-center"
       onClick={onClick}
     >
       {children}
-    </div>
+    </div >
+
   )
 }
 export default Backdrop

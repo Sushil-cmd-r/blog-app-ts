@@ -16,6 +16,10 @@
   .input {
     @apply outline-none bg-[#F7F8FA] border-[1px] px-3 border-[#D9D9DB] border-b-0 w-full;
   }
+
+  .markdown-styles {
+    @apply prose-pre:text-[#e5e7eb] prose-pre:bg-[#1f2937] prose-base prose-headings:my-6 prose-headings:font-semibold prose-p:text-base md:prose-p:text-lg;
+  }
 }
 
 .modal-dim {
