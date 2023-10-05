@@ -1,11 +1,11 @@
 import CoverImage from "../components/CoverImage"
-import Image from "../assets/images/image.jpg"
+import Image from "../assets/images/image.webp"
 import { Avatar } from "@mui/material"
 import Markdown from "react-markdown"
 
 const Single = () => {
   return (
-    <main className="w-full h-full">
+    <>
       <div className="w-full h-full max-w-7xl mx-auto py-4 px-3">
         {/* Image */}
         <section className="h-[50vh] min-h-[400px] max-h-[600px]">
@@ -32,7 +32,7 @@ const Single = () => {
           />
         </section>
       </div>
-    </main>
+    </>
   )
 }
 export default Single

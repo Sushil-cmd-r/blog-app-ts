@@ -9,7 +9,7 @@ const Backdrop = ({ children, onClick }: PropsType) => {
 
   return (
     <div
-      className="fixed top-0 left-0 h-full w-full z-40 bg-[#000000e1] flex items-center justify-center"
+      className="fixed top-0 left-0 h-full w-full z-40 bg-[#000000be] flex items-center justify-center"
       onClick={onClick}
     >
       {children}

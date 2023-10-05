@@ -17,7 +17,7 @@ const LoginModal = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const from = !state.user ? location.state?.background : (location.state?.from || "/")
+  const from = !state.user ? -1 : (location.state?.from || "/")
 
   const modalAnimation = {
     hidden: {
